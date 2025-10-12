@@ -81,11 +81,17 @@ logs/
 *.temp
 .pytest_cache/
 
-# Environment variables
+# Environment variables and API keys
+.env
 .env.local
+.env.development
 .env.development.local
 .env.test.local
 .env.production.local
+*.env
+**/OPENAI_API_KEY
+**/*api*key*
+**/*secret*
 
 # Magentic-UI specific
 magentic-ui/src/magentic_ui/backend/web/ui/

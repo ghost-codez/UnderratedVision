@@ -43,16 +43,20 @@ This repository contains a fully functional installation of **Microsoft Magentic
    playwright install
    ```
 
-4. **Configure API key**
+4. **Configure API key (One-time setup)**
    ```bash
    cp .env.example .env
    # Edit .env and add your OpenAI API key
-   export OPENAI_API_KEY="your-api-key-here"
+   # The API key will be automatically loaded from .env file
    ```
 
 5. **Start the application**
    ```bash
-   magentic-ui --port 8081
+   # Option 1: Use the convenient startup script
+   ./start-magentic-ui.sh
+
+   # Option 2: Manual start (loads .env automatically)
+   source .venv/bin/activate && magentic-ui --port 8081
    ```
 
 6. **Access the interface**

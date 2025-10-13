@@ -1,0 +1,208 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "underratedvision"
+license = "MIT"
+dynamic = ["version"]
+description = "Enterprise-ready multi-domain AI automation platform built on Microsoft Magentic-UI"
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = [
+    "ai-automation", 
+    "multi-agent-systems", 
+    "business-intelligence", 
+    "real-estate", 
+    "construction", 
+    "healthcare", 
+    "marketing", 
+    "workflow-orchestration",
+    "enterprise-ai",
+    "domain-specific-agents",
+    "cross-industry-automation"
+]
+authors = [
+    {name = "UnderratedVision", email = "contact@underratedvision.com"}
+]
+maintainers = [
+    {name = "UnderratedVision Team", email = "maintainers@underratedvision.com"}
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Manufacturing",
+    "Intended Audience :: Real Estate Industry",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11", 
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Office/Business",
+    "Topic :: Office/Business :: Financial",
+    "Topic :: Office/Business :: Scheduling",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: WWW/HTTP :: Browsers",
+]
+
+dependencies = [
+    "magentic-ui>=0.1.2",
+    "autogen-agentchat>=0.5.7",
+    "autogen-core>=0.5.7", 
+    "autogen-ext[openai,docker,file-surfer,web-surfer,magentic-one,task-centric-memory,mcp]>=0.5.7",
+    "pydantic>=2.0.0",
+    "typing-extensions>=4.0.0",
+    "asyncio>=3.4.3",
+    "dataclasses-json>=0.6.0",
+    "python-dateutil>=2.8.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "black>=23.0.0",
+    "isort>=5.12.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0",
+    "pre-commit>=3.0.0",
+]
+azure = [
+    "magentic-ui[azure]",
+    "azure-identity>=1.12.0",
+    "azure-keyvault-secrets>=4.7.0",
+]
+ollama = [
+    "magentic-ui[ollama]",
+    "ollama>=0.1.0",
+]
+enterprise = [
+    "redis>=4.5.0",
+    "celery>=5.3.0",
+    "sqlalchemy>=2.0.0",
+    "alembic>=1.12.0",
+    "prometheus-client>=0.17.0",
+]
+all = [
+    "underratedvision[dev,azure,ollama,enterprise]"
+]
+
+[project.urls]
+Homepage = "https://github.com/ghost-codez/UnderratedVision"
+Documentation = "https://github.com/ghost-codez/UnderratedVision/blob/main/README.md"
+Repository = "https://github.com/ghost-codez/UnderratedVision.git"
+"Bug Tracker" = "https://github.com/ghost-codez/UnderratedVision/issues"
+Changelog = "https://github.com/ghost-codez/UnderratedVision/blob/main/CHANGELOG.md"
+"Upstream Project" = "https://github.com/microsoft/magentic-ui"
+
+[project.scripts]
+underratedvision = "extensions.cli:main"
+uv-demo = "extensions.demo.stakeholder_demonstration:main"
+uv-agents = "extensions.agents:list_agents"
+
+[tool.hatch.version]
+path = "extensions/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["extensions"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/extensions",
+    "/docs",
+    "/README.md",
+    "/CHANGELOG.md",
+    "/LICENSE",
+    "/CONTRIBUTING.md",
+    "/TROUBLESHOOTING.md",
+]
+
+[tool.black]
+line-length = 88
+target-version = ['py310']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+  | magentic-ui
+)/
+'''
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+skip_glob = ["magentic-ui/*"]
+
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+exclude = [
+    "magentic-ui/",
+    "build/",
+    "dist/",
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = "-ra -q --strict-markers"
+testpaths = [
+    "extensions/tests",
+]
+python_files = [
+    "test_*.py",
+    "*_test.py",
+]
+python_classes = [
+    "Test*",
+]
+python_functions = [
+    "test_*",
+]
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks tests as integration tests",
+    "unit: marks tests as unit tests",
+    "real_estate: marks tests for real estate domain",
+    "construction: marks tests for construction domain", 
+    "healthcare: marks tests for healthcare domain",
+    "marketing: marks tests for marketing domain",
+]
+
+[tool.coverage.run]
+source = ["extensions"]
+omit = [
+    "*/tests/*",
+    "*/test_*",
+    "magentic-ui/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "class .*\bProtocol\):",
+    "@(abc\.)?abstractmethod",
+]

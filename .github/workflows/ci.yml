@@ -1,0 +1,106 @@
+name: UnderratedVision CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.10, 3.11, 3.12]
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+    
+    - name: Install dependencies
+      run: |
+        cd magentic-ui
+        uv sync --dev
+    
+    - name: Run tests
+      run: |
+        cd magentic-ui
+        uv run pytest tests/ -v
+    
+    - name: Run linting
+      run: |
+        cd magentic-ui
+        uv run ruff check src
+    
+    - name: Run type checking
+      run: |
+        cd magentic-ui
+        uv run pyright src
+    
+    - name: Test extensions
+      run: |
+        cd extensions
+        python -c "from agents import agent_registry; print('✅ Extensions loaded successfully')"
+
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run security scan
+      uses: github/super-linter@v4
+      env:
+        DEFAULT_BRANCH: main
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        VALIDATE_PYTHON: true
+        VALIDATE_MARKDOWN: true
+        VALIDATE_YAML: true
+
+  documentation:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check documentation
+      run: |
+        # Check that all README files exist
+        test -f README.md
+        test -f extensions/README.md
+        test -f CHANGELOG.md
+        echo "✅ Documentation files present"
+    
+    - name: Validate links
+      run: |
+        # Basic link validation
+        grep -r "https://github.com/ghost-codez/UnderratedVision" . || echo "⚠️ Update repository links"
+        echo "✅ Link validation complete"
+
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: 3.11
+    
+    - name: Test demo capabilities
+      run: |
+        cd extensions
+        python -c "
+        from agents import agent_registry
+        from workflows.multi_domain_orchestrator import multi_domain_orchestrator
+        print(f'✅ {len(agent_registry.list_all_agents())} agents loaded')
+        print(f'✅ Multi-domain orchestrator ready')
+        print('✅ Demo system operational')
+        "

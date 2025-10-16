@@ -149,6 +149,7 @@ For further details on installation please read the [🛠️ Installation](#️-
   <a href="#️-installation">🛠️ Installation</a> &nbsp;|&nbsp;
   <a href="#-multi-domain-architecture">🏗️ Architecture</a> &nbsp;|&nbsp;
   <a href="#-business-impact">📊 Business Impact</a> &nbsp;|&nbsp;
+  <a href="#-security">🔐 Security</a> &nbsp;|&nbsp;
   <a href="#contributing">🤝 Contributing</a> &nbsp;|&nbsp;
   <a href="#license">📄 License</a>
 </p>
@@ -443,7 +444,43 @@ python stakeholder_demonstration.py
 - **Payback Period**: 3-4 months
 - **Efficiency Improvement**: 75-85% across all domains
 
-## 🔗 Attribution & References
+## � Security
+
+### API Key Management
+
+**IMPORTANT**: Never commit your `.env` file or API keys to version control.
+
+1. **Setup your environment**:
+   ```bash
+   cp .env.example .env
+   # Edit .env and add your OPENAI_API_KEY
+   ```
+
+2. **Verify .env is ignored**:
+   ```bash
+   git status
+   # Should NOT show .env file
+   ```
+
+3. **Use the startup script**:
+   ```bash
+   ./start_underratedvision.sh
+   ```
+
+### Security Best Practices
+
+- ✅ Never commit `.env` files
+- ✅ Never share API keys in chat/email
+- ✅ Rotate keys regularly
+- ✅ Use environment variables for secrets
+- ✅ Enable GitHub secret scanning
+- ✅ Review `.gitignore` before committing
+
+For detailed security guidelines, see [SECURITY.md](SECURITY.md).
+
+---
+
+## �🔗 Attribution & References
 
 ### Upstream Project
 - **Original Repository**: https://github.com/microsoft/magentic-ui

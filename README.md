@@ -73,7 +73,7 @@ git submodule update --init --recursive
 # 2. Install dependencies
 cd magentic-ui
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 pip install magentic-ui --upgrade
 
 # 3. Set your API key

@@ -64,6 +64,27 @@ https://github.com/user-attachments/assets/example-video-placeholder
 
 Transform your business operations with multi-domain AI automation in minutes:
 
+### **Easiest Method: Use the Startup Script** ⭐
+
+```bash
+# 1. Clone and setup
+git clone https://github.com/ghost-codez/UnderratedVision.git
+cd UnderratedVision
+git submodule update --init --recursive
+
+# 2. Install dependencies
+cd magentic-ui
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+pip install magentic-ui --upgrade
+cd ..
+
+# 3. Run the startup script (handles API key automatically)
+./start_underratedvision.sh
+```
+
+### **Manual Method**
+
 ```bash
 # 1. Setup environment
 git clone https://github.com/ghost-codez/UnderratedVision.git

@@ -2,6 +2,51 @@
 
 This guide helps resolve common issues when setting up and using UnderratedVision.
 
+## 🚨 Common Runtime Issues
+
+### API Key Not Being Applied
+
+**Problem**: "An error occurred" or "The api_key client option must be set"
+```
+openai.OpenAIError: The api_key client option must be set either by passing api_key to the client or by setting the OPENAI_API_KEY environment variable
+```
+
+**Symptoms:**
+- Error message appears when trying to run tasks
+- WebSocket disconnects immediately after connecting
+- Application starts but fails when you try to use it
+
+**Solution:**
+
+Use the startup script which properly loads your API key:
+
+```bash
+./start_underratedvision.sh
+```
+
+**If using manual startup:**
+
+```bash
+cd magentic-ui
+export $(cat ../.env | grep -v '^#' | grep -v '^$' | xargs)
+source .venv/bin/activate
+uv run magentic-ui --port 8081
+```
+
+**Verify your .env file:**
+
+Make sure your `.env` file contains:
+```
+OPENAI_API_KEY=sk-proj-your-actual-key-here
+```
+
+If you don't have an API key:
+1. Go to https://platform.openai.com/api-keys
+2. Create a new API key
+3. Add it to your `.env` file
+
+---
+
 ## 🚨 Common Installation Issues
 
 ### Docker Issues

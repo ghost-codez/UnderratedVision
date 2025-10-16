@@ -230,6 +230,20 @@ def run_ui(
     if config:
         env_vars["_CONFIG"] = config
 
+    # Copy important environment variables from the current environment
+    # These are needed for the application to function properly
+    important_env_vars = [
+        "OPENAI_API_KEY",
+        "AZURE_OPENAI_API_KEY",
+        "AZURE_OPENAI_ENDPOINT",
+        "OLLAMA_BASE_URL",
+        "PATH",
+        "HOME",
+    ]
+    for env_var in important_env_vars:
+        if env_var in os.environ:
+            env_vars[env_var] = os.environ[env_var]
+
     # Create a temporary environment file to share with Uvicorn workers
     env_file_path = get_env_file_path()
     with open(env_file_path, "w") as temp_env:

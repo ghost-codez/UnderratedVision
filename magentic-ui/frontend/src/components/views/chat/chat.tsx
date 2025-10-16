@@ -333,22 +333,36 @@ export default function ChatView({
   }, [session?.id, visible, activeSocket, onRunStatusChange]);
 
   const handleWebSocketMessage = (message: WebSocketMessage) => {
+    // Handle error messages outside of setCurrentRun to properly set error state
+    if (message.type === "error") {
+      if (inputTimeoutRef.current) {
+        clearTimeout(inputTimeoutRef.current);
+        inputTimeoutRef.current = null;
+      }
+      if (activeSocket) {
+        activeSocket.close();
+        setActiveSocket(null);
+        activeSocketRef.current = null;
+      }
+      console.log("Error: ", message.error);
+      setError({
+        status: false,
+        message: message.error || "An error occurred",
+      });
+      setCurrentRun((current: Run | null) => {
+        if (!current) return null;
+        return {
+          ...current,
+          status: "error",
+        };
+      });
+      return;
+    }
+
     setCurrentRun((current: Run | null) => {
       if (!current || !session?.id) return null;
 
       switch (message.type) {
-        case "error":
-          if (inputTimeoutRef.current) {
-            clearTimeout(inputTimeoutRef.current);
-            inputTimeoutRef.current = null;
-          }
-          if (activeSocket) {
-            activeSocket.close();
-            setActiveSocket(null);
-            activeSocketRef.current = null;
-          }
-          console.log("Error: ", message.error);
-
         case "message":
           if (!message.data) return current;
 

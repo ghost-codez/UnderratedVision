@@ -156,7 +156,12 @@ class WebSocketManager:
             assert run is not None, f"Run {run_id} not found in database"
             assert run.user_id is not None, f"Run {run_id} has no user ID"
 
+            # Load environment variables from system
+            import os
             env_vars = None
+            # Ensure OPENAI_API_KEY is available in the environment
+            if "OPENAI_API_KEY" not in os.environ:
+                logger.warning("OPENAI_API_KEY not found in environment variables")
 
             settings_config["memory_controller_key"] = run.user_id
 

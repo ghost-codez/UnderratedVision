@@ -1,16 +1,16 @@
 # UnderratedVision
 
-## Repository Setup Instructions
+## Setup Instructions
 
 This document provides instructions for setting up the UnderratedVision.
 
-###  Information
+### Information
 - **Name**: UnderratedVision
 - **Description**: Multi-Domain AI Automation Platform - Transforming industries through intelligent automation across diverse professional sectors
 - **Visibility**: Public
 - **Topics**: `ai-automation`, `multi-agent-systems`, `business-intelligence`, `real-estate`, `construction`, `healthcare`, `marketing`, `workflow-orchestration`
 
-### Repository Features to Enable
+### Features to Enable
 - [x] Issues
 - [x] Projects
 - [x] Wiki
